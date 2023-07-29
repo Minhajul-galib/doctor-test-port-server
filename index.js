@@ -1,5 +1,6 @@
-const express = require('express');
+const express = require("express");
 const cors = require('cors');
+const helmet = require("helmet")
 const app = express();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
@@ -14,8 +15,11 @@ const port = process.env.PORT || 5000;
 
 // midleware 
 app.use(cors());
-app.use(express.json());
-
+app.use(
+  express.json(),
+  express.urlencoded({ extended: true })
+  );
+app.use(helmet())
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.uk5kj.mongodb.net/?retryWrites=true&w=majority`;
