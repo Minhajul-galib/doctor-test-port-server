@@ -199,7 +199,7 @@ async function run() {
 
     res.send(allDoctors);
   })
-  app.get('/favicon.ico', (req, res) => res.status(204));
+  // app.get('/favicon.ico', (req, res) => res.status(204));
 
 
   } finally {
