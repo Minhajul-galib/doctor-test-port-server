@@ -65,7 +65,7 @@ async function run() {
     const doctorsCollection = client.db('doctor_portTest').collection('doctorCollection');
 
     // use Agregate to query multiple collection and then 
-    app.get('/appointmentOptions', async(req, res)=>{
+    app.get('/appointmentOptions/', async(req, res)=>{
 
 
       const date = req.query.date;
@@ -86,14 +86,14 @@ async function run() {
         res.send(options);
     } );
 
-    app.get('/appointmentSpeciality', async(req, res)=>{
+    app.get('/appointmentSpeciality/', async(req, res)=>{
       const query = {};
       const result = await appointmentOptions.find(query).project({name:1}).toArray();
       res.send(result)
     })
 
 
-    app.get('/bookings', async(req, res)=>{ 
+    app.get('/bookings/', async(req, res)=>{ 
       const email = req.query.email;
       // const decodedEmail = req.decoded.email;
       
@@ -109,7 +109,7 @@ async function run() {
     // Api naming conventio
 
 
-  app.post('/bookings', async(req, res)=>{
+  app.post('/bookings/', async(req, res)=>{
     const booking = req.body;
 
     const query = {
@@ -131,14 +131,14 @@ async function run() {
 
   
 
-  app.post('/jwt', (req, res)=>{
+  app.post('/jwt/', (req, res)=>{
     const email = req.body.email;
 
     const token = jwt.sign({email}, process.env.ACCESS_TOCKEN, { expiresIn: '2 days' });
     res.send({accessTocken: token })
   });
   
-  app.get('/jwt', (req, res)=>{
+  app.get('/jwt/', (req, res)=>{
     const email = req.body.email;
     // console.log(email);
     const token = jwt.sign({email}, process.env.ACCESS_TOCKEN, { expiresIn: '2 days' });
@@ -146,14 +146,14 @@ async function run() {
   });
 
 
-  app.get('/users', async(req, res)=>{
+  app.get('/users/', async(req, res)=>{
     const query = {};
     const users = await usersCollection.find(query).toArray();
 
     res.send(users);
   });
 
-  app.post('/users', async (req, res)=>{
+  app.post('/users/', async (req, res)=>{
     const user = req.body;
     const result = await usersCollection.insertOne(user);
     res.send(result)
@@ -161,7 +161,7 @@ async function run() {
   
 
 
-  app.get('/users/admin/:email', async (req, res)=>{
+  app.get('/users/admin/:email/', async (req, res)=>{
     const email = req.params.email;
 
     const query = { email };
@@ -170,7 +170,7 @@ async function run() {
     res.send({ isAdmin: user?.role === "admin" });
   })
 
-  app.put('/users/admin/:id', verfiyJWT, async(req, res)=>{
+  app.put('/users/admin/:id/', verfiyJWT, async(req, res)=>{
     const decodedEmail = req.decoded.email;
     const query = {email: decodedEmail};
     const user = await usersCollection.findOne(query);
@@ -191,13 +191,13 @@ async function run() {
     res.send(result);
   });
 
-  app.post('/doctors', async(req, res)=>{
+  app.post('/doctors/', async(req, res)=>{
     const doctor = req.body;
     const result = await doctorsCollection.insertOne(doctor);
 
     res.send(result);
   });
-  app.get('/doctors', async(req, res)=>{
+  app.get('/doctors/', async(req, res)=>{
     const query = {};
     const allDoctors = await doctorsCollection.find(query).toArray();
 
