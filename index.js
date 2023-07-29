@@ -49,10 +49,10 @@ async function verfiyJWT(req, res, next) {
 
 
 async function run() {
-  // const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.uk5kj.mongodb.net/?retryWrites=true&w=majority`;
-  
-  // const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
+    // this code 
 
+
+    // -----------------------
   try {    
     await client.connect();
     const appointmentOptions = client.db('doctor_portTest').collection('AppointmentOptions');
@@ -89,12 +89,12 @@ async function run() {
     })
 
 
-    app.get('/bookings', verfiyJWT, async(req, res)=>{ 
+    app.get('/bookings', async(req, res)=>{ 
       const email = req.query.email;
-      const decodedEmail = req.decoded.email;
+      // const decodedEmail = req.decoded.email;
       
-      console.log('email', email);
-      console.log('decodedEmail', decodedEmail);
+      // console.log('email', email);
+      // console.log('decodedEmail', decodedEmail);
     
       const query = { email: email };
 
@@ -125,20 +125,7 @@ async function run() {
     res.send(result);
   });
 
-  // app.get('/jwt', async(req, res)=>{
-  //   const email = req.query.email;
-  //   const query = {email: email};
-
-  //   console.log('email', email);
-  //   console.log('query', query);
-    
-  //   const user = await usersCollection.findOne(query);
-  //   if(user){
-  //     const token = jwt.sign(email, process.env.ACCESS_TOCKEN, {expiresIn: '1h'})
-  //     return res.send({accessTocken: token});
-  //   }
-  //   res.status(403).send({accessTocken: ''})
-  // });
+  
 
   app.post('/jwt', (req, res)=>{
     const email = req.body.email;
@@ -168,21 +155,7 @@ async function run() {
     res.send(result)
   });
   
-  // app.delete('/users/:id', async (req, res)=>{
-  //   const id = req.params.id;
-  //   const query = { _id: new ObjectId(id) };
 
-  //   const user = await usersCollection.deleteOne(query);
-
-  //   if (user.deletedCount === 1) {
-  //     console.log("Successfully Deleted");
-
-  //   }else{
-  //     console.log("Not Matched");
-  //   }
-
-  //   res.send(user)
-  // })
 
   app.get('/users/admin/:email', async (req, res)=>{
     const email = req.params.email;
@@ -243,3 +216,47 @@ app.get('/', async(req, res)=>{
 
 
 app.listen(port, ()=>console.log(`Doctors Running ${port}`))
+
+
+
+// app.get('/jwt', async(req, res)=>{
+  //   const email = req.query.email;
+  //   const query = {email: email};
+
+  //   console.log('email', email);
+  //   console.log('query', query);
+    
+  //   const user = await usersCollection.findOne(query);
+  //   if(user){
+  //     const token = jwt.sign(email, process.env.ACCESS_TOCKEN, {expiresIn: '1h'})
+  //     return res.send({accessTocken: token});
+  //   }
+  //   res.status(403).send({accessTocken: ''})
+  // });
+
+
+    // app.delete('/users/:id', async (req, res)=>{
+  //   const id = req.params.id;
+  //   const query = { _id: new ObjectId(id) };
+
+  //   const user = await usersCollection.deleteOne(query);
+
+  //   if (user.deletedCount === 1) {
+  //     console.log("Successfully Deleted");
+
+  //   }else{
+  //     console.log("Not Matched");
+  //   }
+
+  //   res.send(user)
+  // })
+
+
+
+
+  // This Code ------------
+ // const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.uk5kj.mongodb.net/?retryWrites=true&w=majority`;
+  
+  // const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
+
+  // ----------------
