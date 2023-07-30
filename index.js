@@ -57,10 +57,13 @@ async function run() {
 
 
       const date = req.query.date;
+      const treatment = req.query.treatment;
+      // console.log('apt date', date);
       const query = {};
         const options = await appointmentOptions.find(query).toArray(); 
         // get the bookings of the provided date 
-        const bookingQuery = { appointmentDate: date };
+        const bookingQuery = { appointmentDate: date, treatment: treatment };
+        console.log('bookingQuery', bookingQuery);
         const alreadyBooked = await bookingsCollection.find(bookingQuery).toArray();
         //code carefully 
         options.forEach(option =>{
@@ -83,11 +86,7 @@ async function run() {
 
     app.get('/bookings/', async(req, res)=>{ 
       const email = req.query.email;
-      // const decodedEmail = req.decoded.email;
-      
-      // console.log('email', email);
-      // console.log('decodedEmail', decodedEmail);
-    
+     
       const query = { email: email };
 
       const bookings = await bookingsCollection.find(query).toArray();
