@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require('cors');
-const helmet = require("helmet")
 const app = express();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
@@ -8,9 +7,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
 
-
-const port = process.env.PORT || 5000;
-
+const port = process.env.PORT || 8000;
 
 
 // midleware 
@@ -19,8 +16,6 @@ app.use(
   express.json(),
   express.urlencoded({ extended: true })
   );
-app.use(helmet())
-
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.uk5kj.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -109,7 +104,7 @@ async function run() {
     // Api naming conventio
 
 
-  app.post('/bookings/', async(req, res)=>{
+    app.post('/bookings/', async(req, res)=>{
     const booking = req.body;
 
     const query = {
@@ -197,6 +192,7 @@ async function run() {
 
     res.send(result);
   });
+
   app.get('/doctors/', async(req, res)=>{
     const query = {};
     const allDoctors = await doctorsCollection.find(query).toArray();
@@ -220,16 +216,30 @@ app.get('/', async(req, res)=>{
   
 });
 
-app.use((err, req, res, next) =>{
-  if (err.message) {
-    res.status(500).send(err.message);
-
-  }else{
-    res.status(500).send('There was an error!!')
-  }
-});
-
 app.listen(port, ()=>console.log(`Doctors Running ${port}`))
+
+app.all('*', (req, res, next) => {
+  console.log('Accessing the secret section ...')
+  next() // pass control to the next handler
+})
+
+// app.all('*', (req, res, next)=>{
+//   const err = new Error(`Request URL ${req.path} not found`);
+//   err.statusCode = 404;
+
+//   next(err);
+// });
+
+// app.use((err, req, res, next)=>{
+  // const statusCode = err.statusCode || 500;
+  // res.status(statusCode).json({
+  //   success: 0,
+  //   message: err.message,
+  //   stack: err.stack
+  // })
+// })
+
+
 
 
 
