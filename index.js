@@ -44,7 +44,7 @@ async function verfiyJWT(req, res, next) {
 
 
 async function run() {
-  
+
   try {    
     await client.connect();
     const appointmentOptions = client.db('doctor_portTest').collection('AppointmentOptions');
@@ -117,8 +117,6 @@ async function run() {
     res.send(result);
   });
 
-  
-
   app.post('/jwt/', (req, res)=>{
     const email = req.body.email;
 
@@ -127,12 +125,10 @@ async function run() {
   });
   
   app.get('/jwt/', (req, res)=>{
-    const email = req.body.email;
-    // console.log(email);
+    const email = req.query.email;
     const token = jwt.sign({email}, process.env.ACCESS_TOCKEN, { expiresIn: '2 days' });
     res.send({accessTocken: token })
   });
-
 
   app.get('/users/', async(req, res)=>{
     const query = {};
@@ -146,8 +142,6 @@ async function run() {
     const result = await usersCollection.insertOne(user);
     res.send(result)
   });
-  
-
 
   app.get('/users/admin/:email/', async (req, res)=>{
     const email = req.params.email;
@@ -162,11 +156,9 @@ async function run() {
     const decodedEmail = req.decoded.email;
     const query = {email: decodedEmail};
     const user = await usersCollection.findOne(query);
-    
     if(user?.role !== 'admin'){
       return res.status(403).send({message: 'Forbidden access'})
     }
-
     const id = req.params.id;
     const filter = { _id: new ObjectId(id) };
     const options = { upsert: true };
@@ -210,5 +202,3 @@ app.get('/', async(req, res)=>{
 });
 
 app.listen(port, ()=>console.log(`Doctors Running ${port}`))
-
-
