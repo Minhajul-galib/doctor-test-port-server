@@ -202,22 +202,32 @@ async function run() {
     const allDoctors = await doctorsCollection.find(query).toArray();
 
     res.send(allDoctors);
-  })
-  // app.get('/favicon.ico', (req, res) => res.status(204));
-
-
-  } finally {
-    // await client.close();
-  }
+  });
+  
+  
+  app.get('/favicon.ico', (req, res) => res.status(204));
+  
+  
+} finally {
+  // await client.close();
+}
 }
 run().catch(console.dir);
 
 app.get('/', async(req, res)=>{
   res.send('Doctors Portal Server Running');
-
-
+  
+  
 });
 
+app.use((err, req, res, next) =>{
+  if (err.message) {
+    res.status(500).send(err.message);
+
+  }else{
+    res.status(500).send('There was an error!!')
+  }
+});
 
 app.listen(port, ()=>console.log(`Doctors Running ${port}`))
 
